@@ -1,4 +1,86 @@
 --==================================================
+-- KEY SYSTEM (DO NOT TOUCH BELOW CODE)
+--==================================================
+local KEY_URL = "https://pastebin.com/raw/CzUsUbpH" -- <-- change this
+local HttpService = game:GetService("HttpService")
+
+local function FetchKey()
+	local success, result = pcall(function()
+		return game:HttpGet(KEY_URL)
+	end)
+	if success then
+		return tostring(result):gsub("%s+", "")
+	end
+	return nil
+end
+
+local VALID_KEY = FetchKey()
+if not VALID_KEY then
+	warn("Failed to load key")
+	return
+end
+
+-- Key UI
+local KeyGui = Instance.new("ScreenGui")
+KeyGui.Name = "hail_key"
+KeyGui.Parent = gethui and gethui() or game:GetService("CoreGui")
+
+local Frame = Instance.new("Frame", KeyGui)
+Frame.Size = UDim2.new(0,320,0,160)
+Frame.Position = UDim2.new(0.5,-160,0.5,-80)
+Frame.BackgroundColor3 = Color3.fromRGB(10,10,10)
+Frame.Active = true
+Frame.Draggable = true
+Instance.new("UICorner", Frame).CornerRadius = UDim.new(0,16)
+
+local Title = Instance.new("TextLabel", Frame)
+Title.Size = UDim2.new(1,0,0,40)
+Title.BackgroundTransparency = 1
+Title.Text = "hail.cc key system"
+Title.Font = Enum.Font.GothamBold
+Title.TextSize = 18
+Title.TextColor3 = Color3.fromRGB(220,50,50)
+
+local Box = Instance.new("TextBox", Frame)
+Box.Size = UDim2.new(0.9,0,0,36)
+Box.Position = UDim2.new(0.05,0,0,55)
+Box.PlaceholderText = "Enter key"
+Box.Text = ""
+Box.Font = Enum.Font.GothamMedium
+Box.TextSize = 14
+Box.BackgroundColor3 = Color3.fromRGB(20,20,20)
+Box.TextColor3 = Color3.new(1,1,1)
+Instance.new("UICorner", Box)
+
+local Btn = Instance.new("TextButton", Frame)
+Btn.Size = UDim2.new(0.9,0,0,36)
+Btn.Position = UDim2.new(0.05,0,0,100)
+Btn.Text = "Verify"
+Btn.Font = Enum.Font.GothamBold
+Btn.TextSize = 14
+Btn.BackgroundColor3 = Color3.fromRGB(220,50,50)
+Btn.TextColor3 = Color3.new(1,1,1)
+Instance.new("UICorner", Btn)
+
+Btn.MouseButton1Click:Connect(function()
+	if Box.Text:gsub("%s+", "") == VALID_KEY then
+		KeyGui:Destroy()
+	else
+		Btn.Text = "Invalid Key"
+		task.delay(1.2, function()
+			Btn.Text = "Verify"
+		end)
+	end
+end)
+
+repeat task.wait() until not KeyGui.Parent
+--==================================================
+-- END KEY SYSTEM
+--==================================================
+
+
+
+--==================================================
 -- SAFE GUI PARENT
 --==================================================
 local CoreGui = gethui and gethui() or game:GetService("CoreGui")
@@ -485,4 +567,3 @@ UIS.InputBegan:Connect(function(input,gp)
 		waitTrig=false
 	end
 end)
-
