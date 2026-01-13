@@ -27,7 +27,7 @@ local Settings = {
 	TriggerBind = Enum.UserInputType.MouseButton1,
 	MenuKey = Enum.KeyCode.Insert,
 
-	AimFOV = 150,
+	AimFOV = 350,
 	Smoothness = 0.18,
 
 	VisualHitbox = false,
@@ -485,3 +485,4 @@ UIS.InputBegan:Connect(function(input,gp)
 		waitTrig=false
 	end
 end)
+
